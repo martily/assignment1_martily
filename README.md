@@ -1,13 +1,3 @@
-#This is the initial readme-file
+##Readme for first assignment, martily @ uio
 
-* First element in a list
-* Second element in the list
-
-
-###This is a subsection of the readme
-
-
-###This is another subsection 
-
-
-TODO: Write stuff
+Just an example of a simple Spring MVC application using .jsp
