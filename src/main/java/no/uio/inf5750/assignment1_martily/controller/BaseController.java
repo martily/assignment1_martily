@@ -1,5 +1,7 @@
 package no.uio.inf5750.assignment1_martily.controller;
 
+import java.util.List;
+
 import no.uio.inf5750.assignment1_martily.dao.MessageDao;
 import no.uio.inf5750.assignment1_martily.model.Message;
 
@@ -80,7 +82,7 @@ public class BaseController {
 	/*
 	 * Print the message with the supplied ID
 	 */
-	 @RequestMapping(value="/read/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/read/{id}", method = RequestMethod.GET)
 	public String readId(@PathVariable int id, ModelMap model) {
 		Message message = messageDao.get(id);
 		if(message!= null) {
@@ -92,5 +94,23 @@ public class BaseController {
 		return "index";
 	}
 	 
-	
+	/*
+	 * Just list all messages, separated by a dash
+	 */
+	@RequestMapping(value="/read/all", method = RequestMethod.GET)
+	public String readAll(ModelMap model) {
+		List<Message> messages = messageDao.getAll();
+		StringBuilder sb = new StringBuilder();
+		for (Message msg : messages) {
+			sb.append(msg.getId() + ": " + msg.getContent() + " - ");
+		}
+		if(sb.length() != 0) {
+			//Remove the last dash
+			sb.replace(sb.length()-3, sb.length()-1, "");
+			model.addAttribute("message", sb.toString());
+		}else {
+			model.addAttribute("message", "No messages in DB ");
+		}
+		return "index";
+	}
 }

@@ -50,4 +50,25 @@ public class HibernateMessageDao implements MessageDao {
 		}
 		return message;
 	}
+	
+	public List<Message> getAll() {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		List<Message> msgs = null;
+		try {
+			tx = session.beginTransaction();
+			@SuppressWarnings("unchecked")
+			List<Message> messages = session.createQuery(
+					"FROM Message ORDER by id ASC").list();
+			msgs = messages;
+			tx.commit();
+		}catch (HibernateException e) {
+			if(tx != null)
+				tx.rollback();
+			logger.error("DB query faied", e);
+		} finally {
+			session.close();
+		}
+		return msgs;
+	}
 }
